@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+option go_package = "genproto/order";
+
+package order;
+
+// Office represents a market's branch where orders can be delivered.
+message Office {
+  string id = 1;
+  string name = 2;
+  string address = 3;
+  double latitude = 4;
+  double longitude = 5;
+  // Add more fields as needed (e.g., contact information, opening hours)
+}
+
+// OfficeRequest is used for various office related gRPC methods.
+message OfficeRequest {
+  string id = 1;
+}
+
+// CreateOfficeRequest is used for creating a new office.
+message CreateOfficeRequest {
+  Office office = 1;
+}
+
+// UpdateOfficeRequest is used for updating an existing office.
+message UpdateOfficeRequest {
+  Office office = 1;
+}
+
+// GetOfficesRequest is used for retrieving a list of offices.
+message GetOfficesRequest {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+// GetOfficesResponse is used for returning a list of offices.
+message GetOfficesResponse {
+  repeated Office offices = 1;
+}
+
+// DeleteOfficeRequest is used for deleting an office.
+message DeleteOfficeRequest {
+  string id = 1;
+}
+
+message DeleteOfficeRes {
+  string id = 1;
+}
+
+
+// OfficeService defines the gRPC service for managing offices.
+service OfficeService {
+  // Create a new office.
+  rpc CreateOffice(CreateOfficeRequest) returns (Office) {}
+  // Get an office by its ID.
+  rpc GetOffice(OfficeRequest) returns (Office) {}
+  // Update an existing office.
+  rpc UpdateOffice(UpdateOfficeRequest) returns (Office) {}
+  // Delete an office.
+  rpc DeleteOffice(DeleteOfficeRequest) returns (DeleteOfficeRes) {}
+  // Get a list of offices.
+  rpc GetOffices(GetOfficesRequest) returns (GetOfficesResponse) {}
+}

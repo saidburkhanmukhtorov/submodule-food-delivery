@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+option go_package = "genproto/order";
+
+package order;
+
+// Product represents a single food item available for ordering.
+message Product {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  string image_url = 5;
+  // Add more fields as needed (e.g., category, availability)
+}
+
+// ProductRequest is used for various product related gRPC methods.
+message ProductRequest {
+  string id = 1;
+}
+
+// CreateProductRequest is used for creating a new product.
+message CreateProductRequest {
+  Product product = 1;
+}
+
+// UpdateProductRequest is used for updating an existing product.
+message UpdateProductRequest {
+  Product product = 1;
+}
+
+// GetProductsRequest is used for retrieving a list of products.
+message GetProductsRequest {
+  int32 page = 1;
+  int32 limit = 2;
+  string name = 3;
+  string description = 4;
+  double min_price = 5;
+  double max_price = 6;
+}
+
+// GetProductsResponse is used for returning a list of products.
+message GetProductsResponse {
+  repeated Product products = 1;
+}
+
+// DeleteProductRequest is used for deleting a product.
+message DeleteProductRequest {
+  string id = 1;
+}
+message DeleteProductRes {
+  string message = 1;
+}
+
+// ProductService defines the gRPC service for managing products.
+service ProductService {
+  // Create a new product.
+  rpc CreateProduct(CreateProductRequest) returns (Product) {}
+  // Get a product by its ID.
+  rpc GetProduct(ProductRequest) returns (Product) {}
+  // Update an existing product.
+  rpc UpdateProduct(UpdateProductRequest) returns (Product) {}
+  // Delete a product.
+  rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductRes) {}
+  // Get a list of products.
+  rpc GetProducts(GetProductsRequest) returns (GetProductsResponse) {}
+}

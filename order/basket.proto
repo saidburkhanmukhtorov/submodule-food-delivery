@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+option go_package = "genproto/order";
+
+package order;
+
+// Basket represents a user's order basket.
+message Basket {
+  string id = 1;
+  string user_id = 2;
+  string status = 3; // "OPEN", "CLOSED", "COMPLETED"
+  // Add more fields as needed (e.g., creation timestamp, total price)
+}
+
+// BasketRequest is used for various basket related gRPC methods.
+message BasketRequest {
+  string id = 1;
+}
+
+// CreateBasketRequest is used for creating a new basket for a user.
+message CreateBasketRequest {
+  Basket basket = 1;
+}
+
+// UpdateBasketRequest is used for updating an existing basket.
+message UpdateBasketRequest {
+  Basket basket = 1;
+}
+
+// GetBasketRequest is used for retrieving a basket by its ID.
+message GetBasketRequest {
+  string id = 1;
+}
+
+// GetBasketByUserRequest is used for retrieving a user's basket.
+message GetBasketByUserRequest {
+  string user_id = 1;
+}
+
+// DeleteBasketRequest is used for deleting a basket.
+message DeleteBasketRequest {
+  string id = 1;
+}
+message DeleteBasketRes{
+    string message = 1;
+}
+
+// BasketItem represents a single item in a user's basket.
+message BasketItem {
+  string id = 1;
+  string basket_id = 2;
+  string product_id = 3;
+  int32 quantity = 4;
+  // Add more fields as needed (e.g., options, special instructions)
+}
+
+// CreateBasketItemRequest is used for adding a product to a basket.
+message CreateBasketItemRequest {
+  BasketItem basket_item = 1;
+}
+
+// GetBasketItemsRequest is used for retrieving all items in a basket.
+message GetBasketItemsRequest {
+  string basket_id = 1;
+}
+
+// GetBasketItemsResponse is used for returning a list of basket items.
+message GetBasketItemsResponse {
+  repeated BasketItem basket_items = 1;
+}
+
+// DeleteBasketItemRequest is used for deleting a basket item.
+message DeleteBasketItemRequest {
+  string id = 1;
+}
+message DeleteBasketItemRes {
+  string message = 1;
+}
+
+
+// UpdateBasketItemQuantityRequest is used for updating the quantity of a product in a basket item.
+message UpdateBasketItemQuantityRequest {
+  string id = 1;
+  int32 quantity = 2;
+}
+
+// BasketService defines the gRPC service for managing baskets.
+service BasketService {
+  // Create a new basket.
+  rpc CreateBasket(CreateBasketRequest) returns (Basket) {}
+  // Get a basket by its ID.
+  rpc GetBasket(BasketRequest) returns (Basket) {}
+  // Get a basket by the user's ID.
+  rpc GetBasketByUser(GetBasketByUserRequest) returns (Basket) {}
+  // Update an existing basket.
+  rpc UpdateBasket(UpdateBasketRequest) returns (Basket) {}
+  // Delete a basket.
+  rpc DeleteBasket(DeleteBasketRequest) returns (DeleteBasketRes) {}
+  // Create a new basket item.
+  rpc CreateBasketItem(CreateBasketItemRequest) returns (BasketItem) {}
+  // Get all items in a basket.
+  rpc GetBasketItems(GetBasketItemsRequest) returns (GetBasketItemsResponse) {}
+  // Delete a basket item.
+  rpc DeleteBasketItem(DeleteBasketItemRequest) returns (DeleteBasketItemRes) {}
+  // Update the quantity of a basket item.
+  rpc UpdateBasketItemQuantity(UpdateBasketItemQuantityRequest) returns (BasketItem) {}
+}
